@@ -19,14 +19,15 @@ InventoryHistory.prototype.setCookie = function(cookie) {
 	this._jar.setCookieSync(request.cookie(cookie), 'http://steamcommunity.com');
 };
 
-InventoryHistory.prototype.getHistory = function(page, callback) {
-	if(typeof page === 'function') {
-		callback = page;
-		page = 1;
+InventoryHistory.prototype.getHistory = function(options, callback) {
+	if(typeof options === 'function') {
+		callback = options;
+		options = {};
 	}
 	
-	console.log("requesting history");
-	this._request("http://steamcommunity.com/my/inventoryhistory?l=english&p=" + page, function(err, response, body) {
+	options.page = options.page || 1;
+	
+	this._request("http://steamcommunity.com/my/inventoryhistory?l=english&p=" + options.page, function(err, response, body) {
 		if(err) {
 			callback(err);
 			return;
