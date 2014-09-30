@@ -39,29 +39,48 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 		var $ = cheerio.load(body);
 		var match = $('.inventory_history_pagingrow').html().match(/(\d+) - (\d+) of (\d+) History Items/);
 		
-		output.first = parseInt(match[1]);
-		output.last = parseInt(match[2]);
-		output.totalTrades = parseInt(match[3]);
+		output.first = parseInt(match[1], 10);
+		output.last = parseInt(match[2], 10);
+		output.totalTrades = parseInt(match[3], 10);
+		
+		// Load the inventory item data
+		var historyInventory = JSON.parse(body.match(/var g_rgHistoryInventory = (.*);/)[1]);
 		
 		output.trades = [];
 		var trades = $('.tradehistoryrow');
+		
+		var item, trade, profileLink, items, j, domItem, econItem, url, info, style, k, parts;
 		for(var i = 0; i < trades.length; i++) {
-			var item = $(trades[i]);
-			var trade = {};
+			item = $(trades[i]);
+			trade = {};
 			
 			trade.date = item.find('.tradehistory_date').html();
 			trade.time = item.find('.tradehistory_timestamp').html();
 			trade.partnerName = item.find('.tradehistory_event_description a').html();
 			trade.partnerSteamID = null;
 			trade.partnerVanityURL = null;
+			trade.itemsReceived = [];
+			trade.itemsGiven = [];
 			
-			var profileLink = item.find('.tradehistory_event_description a').attr('href');
+			profileLink = item.find('.tradehistory_event_description a').attr('href');
 			if(profileLink.indexOf('/profiles/') != -1) {
 				trade.partnerSteamID = profileLink.match(/(\d+)$/)[1];
 			} else {
 				trade.partnerVanityURL = profileLink.match(/\/([^\/]+)$/)[1];
 				if(options.resolveVanityURLs && vanityURLs.indexOf(trade.partnerVanityURL) == -1) {
 					vanityURLs.push(trade.partnerVanityURL);
+				}
+			}
+			
+			items = item.find('.history_item');
+			for(j = 0; j < items.length; j++) {
+				match = body.match(new RegExp("HistoryPageCreateItemHover\\( '" + $(items[j]).attr('id') + "', (\\d+), '(\\d+)', '(\\d+)', '(\\d+)' \\);"));
+				econItem = historyInventory[match[1]][match[2]][match[3]];
+				
+				if($(items[j]).attr('id').indexOf('received') != -1) {
+					trade.itemsReceived.push(econItem);
+				} else {
+					trade.itemsGiven.push(econItem);
 				}
 			}
 			
