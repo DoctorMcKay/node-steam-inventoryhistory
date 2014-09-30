@@ -42,6 +42,18 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 		output.last = parseInt(match[2]);
 		output.totalTrades = parseInt(match[3]);
 		
+		output.trades = [];
+		var trades = $('.tradehistoryrow');
+		for(var i = 0; i < trades.length; i++) {
+			var item = $(trades[i]);
+			var trade = {};
+			
+			trade.date = item.find('.tradehistory_date').html();
+			trade.time = item.find('.tradehistory_timestamp').html();
+			trade.partnerName = item.find('.tradehistory_event_description a').html();
+			output.trades.push(trade);
+		}
+		
 		callback(null, output);
 	});
 };
