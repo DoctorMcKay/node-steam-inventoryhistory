@@ -1,5 +1,6 @@
 var request = require('request');
 var cheerio = require('cheerio');
+var async = require('async');
 
 module.exports = InventoryHistory;
 
@@ -49,7 +50,7 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 		output.trades = [];
 		var trades = $('.tradehistoryrow');
 		
-		var item, trade, profileLink, items, j, domItem, econItem, url, info, style, k, parts;
+		var item, trade, profileLink, items, j, econItem;
 		for(var i = 0; i < trades.length; i++) {
 			item = $(trades[i]);
 			trade = {};
@@ -88,9 +89,47 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 		}
 		
 		if(options.resolveVanityURLs) {
-			// TODO: Resolve vanity URLs
+			async.map(vanityURLs, resolveVanityURL, function(err, results) {
+				if(err) {
+					callback(err);
+					return;
+				}
+				
+				for(i = 0; i < output.trades.length; i++) {
+					if(output.trades[i].partnerSteamID || !output.trades[i].partnerVanityURL) {
+						continue;
+					}
+					
+					// Find the vanity URL
+					for(j = 0; j < results.length; j++) {
+						if(results[j].vanityURL == output.trades[i].partnerVanityURL) {
+							output.trades[i].partnerSteamID = results[j].steamID;
+							break;
+						}
+					}
+				}
+				
+				callback(null, output);
+			});
+		} else {
+			callback(null, output);
 		}
-		
-		callback(null, output);
 	});
 };
+
+function resolveVanityURL(vanityURL, callback) {
+	request("http://steamcommunity.com/id/" + vanityURL + "/?xml=1", function(err, response, body) {
+		if(err) {
+			callback(err);
+			return;
+		}
+		
+		var match = body.match(/<steamID64>(\d+)<\/steamID64>/);
+		if(!match || !match[1]) {
+			callback("Couldn't find Steam ID");
+			return;
+		}
+		
+		callback(null, {"vanityURL": vanityURL, "steamID": match[1]});
+	});
+}
