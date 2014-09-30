@@ -34,6 +34,7 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 		}
 		
 		var output = {};
+		var vanityURLs = [];
 		
 		var $ = cheerio.load(body);
 		var match = $('.inventory_history_pagingrow').html().match(/(\d+) - (\d+) of (\d+) History Items/);
@@ -59,9 +60,16 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 				trade.partnerSteamID = profileLink.match(/(\d+)$/)[1];
 			} else {
 				trade.partnerVanityURL = profileLink.match(/\/([^\/]+)$/)[1];
+				if(options.resolveVanityURLs && vanityURLs.indexOf(trade.partnerVanityURL) == -1) {
+					vanityURLs.push(trade.partnerVanityURL);
+				}
 			}
 			
 			output.trades.push(trade);
+		}
+		
+		if(options.resolveVanityURLs) {
+			// TODO: Resolve vanity URLs
 		}
 		
 		callback(null, output);
