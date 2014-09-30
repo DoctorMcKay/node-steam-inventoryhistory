@@ -35,7 +35,11 @@ InventoryHistory.prototype.getHistory = function(page, callback) {
 		var output = {};
 		
 		var $ = cheerio.load(body);
-		output.totalTrades = parseInt($('.inventory_history_pagingrow').html().match(/\d+ - \d+ of (\d+) History Items/)[1]);
+		var match = $('.inventory_history_pagingrow').html().match(/(\d+) - (\d+) of (\d+) History Items/);
+		
+		output.first = parseInt(match[1]);
+		output.last = parseInt(match[2]);
+		output.totalTrades = parseInt(match[3]);
 		
 		callback(null, output);
 	});
