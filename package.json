@@ -1,0 +1,19 @@
+{
+	"name": "steam-inventoryhistory",
+	"version": "0.1.0",
+	"description": "Exposes the inventory history of a Steam account in a simple interface",
+	"keywords": ["steam", "trade", "steam trade", "inventory", "steam inventory", "gaming"],
+	"homepage": "https://github.com/DoctorMcKay/node-steam-inventory-history",
+	"bugs": {
+		"url": "https://github.com/DoctorMcKay/node-steam-inventoryhistory/issues"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Doctor_McKay/node-steam-inventoryhistory.git"
+	},
+	"dependencies": {
+		"request":			"2.44.x",
+		"cheerio":			"0.17.x"
+	}
+}
