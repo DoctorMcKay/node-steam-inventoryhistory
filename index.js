@@ -51,6 +51,16 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 			trade.date = item.find('.tradehistory_date').html();
 			trade.time = item.find('.tradehistory_timestamp').html();
 			trade.partnerName = item.find('.tradehistory_event_description a').html();
+			trade.partnerSteamID = null;
+			trade.partnerVanityURL = null;
+			
+			var profileLink = item.find('.tradehistory_event_description a').attr('href');
+			if(profileLink.indexOf('/profiles/') != -1) {
+				trade.partnerSteamID = profileLink.match(/(\d+)$/)[1];
+			} else {
+				trade.partnerVanityURL = profileLink.match(/\/([^\/]+)$/)[1];
+			}
+			
 			output.trades.push(trade);
 		}
 		
