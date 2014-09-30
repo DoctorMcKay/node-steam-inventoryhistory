@@ -37,7 +37,7 @@ Finally, you can call the `getHistory` method to get your inventory history.
 
 ## setCookies(cookies)
 
-Sets up the internal cookie jar with an array of `cookies`. You might get these from [node-steam](https://github.com/seishun/node-steam).
+Sets up the internal cookie jar with an array of `cookies`. You might get these from [node-steam](https://github.com/seishun/node-steam) or from [node-steamcommunity](https://github.com/DoctorMcKay/node-steamcommunity).
 
 ## setCookie(cookie)
 
