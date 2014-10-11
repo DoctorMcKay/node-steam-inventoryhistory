@@ -38,7 +38,13 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 		var vanityURLs = [];
 		
 		var $ = cheerio.load(body);
-		var match = $('.inventory_history_pagingrow').html().match(/(\d+) - (\d+) of (\d+) History Items/);
+		var html = $('.inventory_history_pagingrow').html();
+		if(!html) {
+			callback("Malformed page: no paging row found");
+			return;
+		}
+		
+		var match = html.match(/(\d+) - (\d+) of (\d+) History Items/);
 		
 		output.first = parseInt(match[1], 10);
 		output.last = parseInt(match[2], 10);
