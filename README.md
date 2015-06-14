@@ -58,8 +58,7 @@ The callback will receive two parameters:
 	- `last` - The index of the last trade on this page.
 	- `totalTrades` - The total number of trades in your history.
 	- `trades` - An array containing the trades on this page:
-		- `date` - The date on which this trade took place, in the format of "Sep 30" (in the US). Unfortunately, the year doesn't appear to be available.
-		- `time` - The time when this trade took place, in the format of "12:00pm" (in the US).
+		- `date` - A Date object for the date and time when this trade took place.
 		- `partnerName` - The current profile name of the person you traded with.
 		- `partnerSteamID` - The 64-bit Steam ID of the person you traded with. This will be `null` if they have a custom URL and you didn't specify `resolveVanityURLs`.
 		- `partnerVanityURL` - The custom profile URL of the person you traded with, if it exists. `null` if they don't have one.

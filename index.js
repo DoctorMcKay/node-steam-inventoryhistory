@@ -58,13 +58,23 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 		output.trades = [];
 		var trades = $('.tradehistoryrow');
 		
-		var item, trade, profileLink, items, j, econItem;
+		var item, trade, profileLink, items, j, econItem, timeMatch, time;
 		for(var i = 0; i < trades.length; i++) {
 			item = $(trades[i]);
 			trade = {};
 			
-			trade.date = item.find('.tradehistory_date').html().match(/([^,]+)/)[1];
-			trade.time = item.find('.tradehistory_timestamp').html();
+			timeMatch = item.find('.tradehistory_timestamp').html().match(/(\d+):(\d+)(am|pm)/);
+			if(timeMatch[1] == 12 && timeMatch[3] == 'am') {
+				timeMatch[1] = 0;
+			}
+			
+			if(timeMatch[1] < 12 && timeMatch[3] == 'pm') {
+				timeMatch[1] = parseInt(timeMatch[1], 10) + 12;
+			}
+			
+			time = (timeMatch[1] < 10 ? '0' : '') + timeMatch[1] + ':' + timeMatch[2] + ':00';
+			
+			trade.date = new Date(item.find('.tradehistory_date').html() + ' ' + time);
 			trade.partnerName = item.find('.tradehistory_event_description a').html();
 			trade.partnerSteamID = null;
 			trade.partnerVanityURL = null;
