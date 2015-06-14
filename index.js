@@ -7,6 +7,8 @@ module.exports = InventoryHistory;
 function InventoryHistory() {
 	this._jar = request.jar();
 	this._request = request.defaults({"jar": this._jar});
+	
+	this._jar.setCookieSync(request.cookie('Steam_Language=english'), 'http://steamcommunity.com');
 }
 
 InventoryHistory.prototype.setCookies = function(cookies) {
