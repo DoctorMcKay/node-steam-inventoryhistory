@@ -1,6 +1,6 @@
 {
 	"name": "steam-inventoryhistory",
-	"version": "0.1.2",
+	"version": "1.0.0",
 	"description": "Exposes the inventory history of a Steam account in a simple interface",
 	"keywords": ["steam", "trade", "steam trade", "inventory", "steam inventory", "gaming"],
 	"homepage": "https://github.com/DoctorMcKay/node-steam-inventory-history",
