@@ -61,7 +61,7 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 			item = $(trades[i]);
 			trade = {};
 			
-			trade.date = item.find('.tradehistory_date').html();
+			trade.date = item.find('.tradehistory_date').html().match(/([^,]+)/)[1];
 			trade.time = item.find('.tradehistory_timestamp').html();
 			trade.partnerName = item.find('.tradehistory_event_description a').html();
 			trade.partnerSteamID = null;
