@@ -1,6 +1,6 @@
 # Steam Inventory History
 
-This small module allows you to easily retrieve the trade history for your Steam account from Node. It works by parsing the [inventory history page](http://steamcommunity.com/my/inventoryhistory) so there may be problems with different localizations.
+This small module allows you to easily retrieve the trade history for your Steam account from Node. It works by parsing the [inventory history page](http://steamcommunity.com/my/inventoryhistory) and only supports English.
 
 This might be useful to check if a "failed" [trade offer](https://github.com/Alex7Kom/node-steam-tradeoffers) actually went through.
 
