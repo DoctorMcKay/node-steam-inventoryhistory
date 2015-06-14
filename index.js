@@ -8,7 +8,7 @@ function InventoryHistory() {
 	this._jar = request.jar();
 	this._request = request.defaults({"jar": this._jar});
 	
-	this._jar.setCookieSync(request.cookie('Steam_Language=english'), 'http://steamcommunity.com');
+	this._jar.setCookie(request.cookie('Steam_Language=english'), 'http://steamcommunity.com');
 }
 
 InventoryHistory.prototype.setCookies = function(cookies) {
@@ -19,7 +19,7 @@ InventoryHistory.prototype.setCookies = function(cookies) {
 };
 
 InventoryHistory.prototype.setCookie = function(cookie) {
-	this._jar.setCookieSync(request.cookie(cookie), 'http://steamcommunity.com');
+	this._jar.setCookie(request.cookie(cookie), 'http://steamcommunity.com');
 };
 
 InventoryHistory.prototype.getHistory = function(options, callback) {
