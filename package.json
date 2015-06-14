@@ -10,7 +10,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Doctor_McKay/node-steam-inventoryhistory.git"
+		"url": "https://github.com/DoctorMcKay/node-steam-inventoryhistory.git"
 	},
 	"dependencies": {
 		"request":			"^2.57.0",
