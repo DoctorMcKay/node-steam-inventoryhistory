@@ -53,7 +53,12 @@ InventoryHistory.prototype.getHistory = function(options, callback) {
 		output.totalTrades = parseInt(match[3], 10);
 		
 		// Load the inventory item data
-		var historyInventory = JSON.parse(body.match(/var g_rgHistoryInventory = (.*);/)[1]);
+		var match2 = body.match(/var g_rgHistoryInventory = (.*);/);
+		if(!match2) {
+			callback("Malformed page: no trade found");
+			return;
+		}
+		var historyInventory = JSON.parse(match2[1]);
 		
 		output.trades = [];
 		var trades = $('.tradehistoryrow');
